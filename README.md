@@ -1,4 +1,9 @@
-# uvoxid
+# UVoxID
+
+[![PyPI version](https://img.shields.io/pypi/v/uvoxid.svg)](https://pypi.org/project/uvoxid/)
+[![Python versions](https://img.shields.io/pypi/pyversions/uvoxid.svg)](https://pypi.org/project/uvoxid/)
+[![License](https://img.shields.io/pypi/l/uvoxid.svg)](https://github.com/JDPlumbing/uvoxid/blob/main/LICENSE)
+[![Tests](https://github.com/JDPlumbing/uvoxid/actions/workflows/tests.yml/badge.svg)](https://github.com/JDPlumbing/uvoxid/actions)
 
 **Universal Voxel Identifier (UVoxID)** — a Python library for encoding and decoding spherical spatial coordinates at micrometer precision.  
 
@@ -21,6 +26,7 @@ UVoxID fixes all that with a **deterministic, integer-based addressing scheme**:
 - **Spherical-native**: gravity, orbits, and planetary geometry “just work.”  
 
 ---
+
 ## 🔬 Resolution in UVoxID
 
 UVoxID encodes space into deterministic voxels with **two kinds of precision**:
@@ -91,7 +97,6 @@ UVoxID encodes space into deterministic voxels with **two kinds of precision**:
 - **String encodings**: Base32, hex, or binary.  
 - **Ephemeris support**: Sun & Moon positions → UV, tides, day/night cycles.  
 - **Earth model**: WGS84 ellipsoid radius corrections.  
-- **Entanglement utilities**: bit-suffix coupling for groups of voxels.  
 - **Scale introspection**: compute what resolution a given ID represents.  
 
 ---
@@ -124,7 +129,7 @@ print("Decoded:", r_um, lat/1e6, lon/1e6)
 Output:
 ```
 Hex: 00059fb8c83f1000-00000000055d4a80-0000000000aba950
-Base32: uvoxid:AABBAAACCCC-DDDDEEEEFFFF-GGGGHHHHIIII
+Base32: uvoxid:AAAALS25GEPAA-AAAAAAAFLVFIA-AAAAAAAKXKKQA
 Decoded: 6371000000000 0.0 0.0
 ```
 
@@ -136,3 +141,19 @@ Decoded: 6371000000000 0.0 0.0
 - Python bindings for Rust/C++ core for performance.  
 - Optional Morton-code compatibility for indexing.  
 - Support for >192-bit scales (atomic → galactic cluster).  
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!  
+- Open an [issue](https://github.com/JDPlumbing/uvoxid/issues) for bugs/feature requests.  
+- Submit pull requests for improvements.  
+
+---
+
+## 📎 Links
+- [PyPI](https://pypi.org/project/uvoxid/)  
+- [Source Code](https://github.com/JDPlumbing/uvoxid)  
+- [Issue Tracker](https://github.com/JDPlumbing/uvoxid/issues)  
+- [Changelog](https://github.com/JDPlumbing/uvoxid/releases)  
