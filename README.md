@@ -21,6 +21,44 @@ UVoxID fixes all that with a **deterministic, integer-based addressing scheme**:
 - **Spherical-native**: gravity, orbits, and planetary geometry “just work.”  
 
 ---
+## 🔬 Resolution in UVoxID
+
+UVoxID encodes space into deterministic voxels with **two kinds of precision**:
+
+- **Radial precision**:  
+  - Always **1 µm** (1/1000 mm), no matter the distance.  
+  - From Earth’s core to interstellar space, every radial step is exact.  
+
+- **Angular precision**:  
+  - Depends on radius `r`.  
+  - At small `r` → atomic/subatomic detail.  
+  - At large `r` → still millimeter-scale voxels, even across light-years.  
+
+---
+
+### 📊 Example Resolutions
+
+| Distance (r)    | Radial Resolution | Angular Resolution |
+|-----------------|------------------|--------------------|
+| **Earth radius (~6,371 km)** | 1 µm | ~2 × 10⁻¹² m (2 picometers, subatomic) |
+| **Moon distance (~384,000 km)** | 1 µm | ~1 × 10⁻¹⁰ m (0.1 nanometer, X-ray scale) |
+| **1 AU (~150 million km)** | 1 µm | ~5 × 10⁻⁸ m (50 nanometers, virus scale) |
+| **1 light year** | 1 µm | ~3 × 10⁻³ m (3 millimeters) |
+| **2 light years (max)** | 1 µm | ~6 × 10⁻³ m (6 millimeters) |
+
+---
+
+### ⚡ Why This Matters
+- **No floats, no drift** → everything is stored as integers.  
+- Near Earth, UVoxID gives **atomic-level positioning**.  
+- Across interstellar distances, UVoxID still holds positions with **millimeter precision**.  
+- This combination makes it ideal for:  
+  - physics & materials simulations,  
+  - planetary & orbital mechanics,  
+  - infinite game worlds,  
+  - robotics & autonomous navigation.  
+
+---
 
 ## 🚀 Use Cases
 

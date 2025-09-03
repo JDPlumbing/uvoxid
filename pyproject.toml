@@ -1,18 +1,24 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "uvoxid"
 version = "0.1.0"
-description = "UVoxID: A Universal Voxel Identifier — deterministic spherical coordinate system"
+description = "Universal Voxel Identifier (UVoxID) — deterministic 192-bit coordinate system for spherical space"
 readme = "README.md"
-license = { text = "Apache-2.0" }
+license = { file = "LICENSE" }
 authors = [
-  { name="JD Plumbing", email="jdplumbingsoflo@gmail.com" }
+  { name="Dr.Ippy", email="jdplumbingsoflo@gmail.com" }
 ]
-requires-python = ">=3.8"
-dependencies = []
+requires-python = ">=3.9"
+keywords = ["coordinates", "spatial", "voxel", "physics", "geospatial"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
 
 [project.urls]
 Homepage = "https://github.com/JDPlumbing/uvoxid"
+Repository = "https://github.com/JDPlumbing/uvoxid"

@@ -2,7 +2,8 @@
 
 import math
 from datetime import datetime, timezone
-from core import encode_uvoxid, decode_uvoxid, uvoxid_to_b32
+from uvoxid.core import encode_uvoxid, decode_uvoxid
+from uvoxid.formats import uvoxid_to_b32
 
 # --- Constants ---
 AU_UM = 149_597_870_700_000_000   # 1 AU in µm
@@ -32,11 +33,11 @@ def moon_barycenter_uvoxid(when: datetime) -> int:
     return encode_uvoxid(MOON_DIST_UM, 0, int(L * 1e6))
 
 # --- Generic alt/az calculator ---
-def alt_az_from_body(voxel_ssc: int, body_ssc: int):
-    r_um, lat_microdeg, lon_microdeg = decode_uvoxid(voxel_ssc)
+def alt_az_from_body(voxel_uvoxid: int, body_uvoxid: int):
+    r_um, lat_microdeg, lon_microdeg = decode_uvoxid(voxel_uvoxid)
     lat_rad, lon_rad = math.radians(lat_microdeg/1e6), math.radians(lon_microdeg/1e6)
 
-    _, body_lat_microdeg, body_lon_microdeg = decode_uvoxid(body_ssc)
+    _, body_lat_microdeg, body_lon_microdeg = decode_uvoxid(body_uvoxid)
     body_lat_rad, body_lon_rad = math.radians(body_lat_microdeg/1e6), math.radians(body_lon_microdeg/1e6)
 
     H = lon_rad - body_lon_rad
@@ -52,11 +53,11 @@ def alt_az_from_body(voxel_ssc: int, body_ssc: int):
     ))
     return alt, (az + 360) % 360
 
-def solar_alt_az(voxel_ssc: int, when: datetime):
-    return alt_az_from_body(voxel_ssc, sun_barycenter_uvoxid(when))
+def solar_alt_az(voxel_uvoxid: int, when: datetime):
+    return alt_az_from_body(voxel_uvoxid, sun_barycenter_uvoxid(when))
 
-def lunar_alt_az(voxel_ssc: int, when: datetime):
-    return alt_az_from_body(voxel_ssc, moon_barycenter_uvoxid(when))
+def lunar_alt_az(voxel_uvoxid: int, when: datetime):
+    return alt_az_from_body(voxel_uvoxid, moon_barycenter_uvoxid(when))
 
 # --- Tidal forces ---
 def tidal_force(mass: float, dist_m: float) -> float:
@@ -74,11 +75,11 @@ def moon_phase_angle(when: datetime) -> float:
     Returns elongation angle Sun–Earth–Moon in degrees.
     0° = New Moon, 180° = Full Moon.
     """
-    sun_ssc = sun_barycenter_uvoxid(when)
-    moon_ssc = moon_barycenter_uvoxid(when)
+    sun_uv = sun_barycenter_uvoxid(when)
+    moon_uv = moon_barycenter_uvoxid(when)
 
-    _, _, sun_lon_microdeg = decode_uvoxid(sun_ssc)
-    _, _, moon_lon_microdeg = decode_uvoxid(moon_ssc)
+    _, _, sun_lon_microdeg = decode_uvoxid(sun_uv)
+    _, _, moon_lon_microdeg = decode_uvoxid(moon_uv)
 
     sun_lon = sun_lon_microdeg/1e6
     moon_lon = moon_lon_microdeg/1e6
@@ -100,22 +101,22 @@ def moon_phase_name(when: datetime) -> str:
     if angle < 350: return "Waning Crescent"
     return "New Moon"
 
-# --- Pretty print SSC ---
-def print_uvoxid(label, ssc):
-    r_um, lat_microdeg, lon_microdeg = decode_uvoxid(ssc)
+# --- Pretty print UVoxID ---
+def print_uvoxid(label: str, uvoxid: int):
+    r_um, lat_microdeg, lon_microdeg = decode_uvoxid(uvoxid)
     print(f"{label}:")
-    print("  Base32:", uvoxid_to_b32(ssc))
+    print("  Base32:", uvoxid_to_b32(uvoxid))
     print(f"  Decoded → r={r_um:,} µm, lat={lat_microdeg/1e6:.4f}°, lon={lon_microdeg/1e6:.4f}°")
 
 # --- Example ---
 if __name__ == "__main__":
     now = datetime.now(timezone.utc)
 
-    sun_ssc = sun_barycenter_uvoxid(now)
-    moon_ssc = moon_barycenter_uvoxid(now)
+    sun_uv = sun_barycenter_uvoxid(now)
+    moon_uv = moon_barycenter_uvoxid(now)
 
-    print_uvoxid("Sun uvoxid", sun_ssc)
-    print_uvoxid("Moon uvoxid", moon_ssc)
+    print_uvoxid("Sun UVoxID", sun_uv)
+    print_uvoxid("Moon UVoxID", moon_uv)
 
     EARTH_RADIUS_UM = 6_371_000_000_000
     voxel = encode_uvoxid(EARTH_RADIUS_UM, int(25.76*1e6), int(-80.19*1e6))  # Miami

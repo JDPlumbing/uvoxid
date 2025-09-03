@@ -1,26 +1,20 @@
-# moon.py
 """
-Voxelized Moon model for uvoxid.
+Voxelized Moon model for UVoxID.
 All distances are in micrometers (µm).
+Layer boundaries are approximate — this is a simplified model.
 """
+
+from uvoxid.core import decode_uvoxid
 
 # --- Moon constants ---
 R_MOON_UM = 1_737_000_000_000  # Moon mean radius (µm)
 
 # Approximate layer boundaries
 moon_layers = [
-    {"name": "Inner Core", 
-     "r_min": 0, 
-     "r_max": int(0.14 * R_MOON_UM)},  # ~240 km
-    {"name": "Outer Core", 
-     "r_min": int(0.14 * R_MOON_UM), 
-     "r_max": int(0.20 * R_MOON_UM)},  # ~330–350 km
-    {"name": "Mantle", 
-     "r_min": int(0.20 * R_MOON_UM), 
-     "r_max": int(0.97 * R_MOON_UM)},  # crust base ~50 km down
-    {"name": "Crust", 
-     "r_min": int(0.97 * R_MOON_UM), 
-     "r_max": R_MOON_UM},              # 30–50 km thick
+    {"name": "Inner Core", "r_min": 0, "r_max": int(0.14 * R_MOON_UM)},   # ~240 km
+    {"name": "Outer Core", "r_min": int(0.14 * R_MOON_UM), "r_max": int(0.20 * R_MOON_UM)},  # ~330–350 km
+    {"name": "Mantle",     "r_min": int(0.20 * R_MOON_UM), "r_max": int(0.97 * R_MOON_UM)},  # crust base ~50 km down
+    {"name": "Crust",      "r_min": int(0.97 * R_MOON_UM), "r_max": R_MOON_UM},              # 30–50 km thick
 ]
 
 def classify_moon_r(r_um: int) -> str:
@@ -31,6 +25,13 @@ def classify_moon_r(r_um: int) -> str:
         if layer["r_min"] <= r_um <= layer["r_max"]:
             return layer["name"]
     return "Space"
+
+def classify_moon_uvoxid(uvoxid: int) -> str:
+    """
+    Return lunar layer name for a given UVoxID.
+    """
+    r_um, _, _ = decode_uvoxid(uvoxid)
+    return classify_moon_r(r_um)
 
 def is_inside_moon(r_um: int) -> bool:
     """
